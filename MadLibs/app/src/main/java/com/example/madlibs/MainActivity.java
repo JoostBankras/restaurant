@@ -19,27 +19,27 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Story first;
-    private String joe;
+    private Story story;
+    private String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (load() == null){
             setContentView(R.layout.activity_main);
-            first = get_random_story();
+            story = get_random_story();
             save();
         }
         else{
-            first = load();
-            if (first.getPlaceholderRemainingCount() == 0){
+            story = load();
+            if (story.getPlaceholderRemainingCount() == 0){
                 setContentView(R.layout.story);
                 TextView one = findViewById(R.id.textView2);
-                String haha = first.toString();
+                String text1 = story.toString();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    one.setText(Html.fromHtml(haha, Html.FROM_HTML_MODE_LEGACY));
+                    one.setText(Html.fromHtml(text1, Html.FROM_HTML_MODE_LEGACY));
                 } else {
-                    one.setText(Html.fromHtml(haha));
+                    one.setText(Html.fromHtml(text1));
                 }
             }
             else{
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
             }
             save();
         }
-//        System.out.println(first.text);
     }
     private Story get_random_story() {
         List<String> List = new ArrayList<>();
@@ -60,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
         Random rand = new Random();
         int version = rand.nextInt(List.size());
-        joe = List.get(version);
-        first = get_story(joe);
-        first.htmlMode = true;
-        return first;
+        text = List.get(version);
+        story = get_story(text);
+        story.htmlMode = true;
+        return story;
     }
     private Story get_story(String joe) {
 
@@ -98,12 +97,11 @@ public class MainActivity extends AppCompatActivity {
     public void onItemClick(View view) {
         setContentView(R.layout.main_fillin);
         TextView remaining = findViewById(R.id.textView4);
-        int count = first.getPlaceholderRemainingCount();
+        int count = story.getPlaceholderRemainingCount();
         String count1 = Integer.toString(count);
         remaining.setText(count1 + " word(s) left");
         TextView next = findViewById(R.id.textView6);
-        String next1 = first.getNextPlaceholder();
-        System.out.println(next1);
+        String next1 = story.getNextPlaceholder();
         next.setText("please type a " + next1);
         TextView input = findViewById(R.id.editText);
         input.setHint(next1);
@@ -114,28 +112,26 @@ public class MainActivity extends AppCompatActivity {
     public void onItemClick1(View view){
         TextView input = findViewById(R.id.editText);
         String input1 = input.getText().toString();
-        first.fillInPlaceholder(input1);
-        String next1 = first.getNextPlaceholder();
+        story.fillInPlaceholder(input1);
+        String next1 = story.getNextPlaceholder();
         input.setText("");
         input.setHint(next1);
         TextView remaining = findViewById(R.id.textView4);
-        int count = first.getPlaceholderRemainingCount();
+        int count = story.getPlaceholderRemainingCount();
         String count1 = Integer.toString(count);
         remaining.setText(count1 + " word(s) left");
         TextView next = findViewById(R.id.textView6);
-
-        System.out.println(next1);
         next.setText("please type a " + next1);
 
 
-        if (first.getPlaceholderRemainingCount() <= 0) {
+        if (story.getPlaceholderRemainingCount() <= 0) {
             setContentView(R.layout.story);
             TextView one = findViewById(R.id.textView2);
-            String haha = first.toString();
+            String text1 = story.toString();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                one.setText(Html.fromHtml(haha, Html.FROM_HTML_MODE_LEGACY));
+                one.setText(Html.fromHtml(text1, Html.FROM_HTML_MODE_LEGACY));
             } else {
-                one.setText(Html.fromHtml(haha));
+                one.setText(Html.fromHtml(text1));
             }
 
             save();
@@ -143,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
         save();
     }
     public void onItemClick2(View view){
-        first.clear();
+        story.clear();
         setContentView(R.layout.main_fillin);
-        first = get_random_story();
+        story = get_random_story();
         onItemClick(view);
 
         save();
@@ -162,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
         SharedPreferences.Editor editor2 = sharedPreferences2.edit();
         SharedPreferences.Editor editor3 = sharedPreferences3.edit();
-        editor.putString("first",joe);
-        editor1.putString("second",first.text);
-        editor2.putInt("third",first.filledIn);
-        editor3.putBoolean("fourth",first.htmlMode);
+        editor.putString("first",text);
+        editor1.putString("second",story.text);
+        editor2.putInt("third",story.filledIn);
+        editor3.putBoolean("fourth",story.htmlMode);
         editor.commit();
         editor1.commit();
         editor2.commit();
@@ -181,17 +177,17 @@ public class MainActivity extends AppCompatActivity {
         String set1 =sharedPreferences1.getString("second",null);
         int set2 =sharedPreferences2.getInt("third",0);
         Boolean set3 =sharedPreferences3.getBoolean("fourth",false);
-        Story story = get_story(set);
-        story.text = set1;
-        story.filledIn = set2;
-        story.htmlMode = set3;
+        Story story1 = get_story(set);
+        story1.text = set1;
+        story1.filledIn = set2;
+        story1.htmlMode = set3;
         if (set == null || set1 == null || set2 == 0){
             return null;
         }
         else{
-            joe = set;
-            first = story;
-            return story;
+            text = set;
+            story = story1;
+            return story1;
         }
 
     }
