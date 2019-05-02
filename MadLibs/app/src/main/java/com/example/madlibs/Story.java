@@ -33,13 +33,14 @@ public class Story implements Serializable {
         text = "";
         placeholders = new ArrayList<String>();
         filledIn = 0;
-        htmlMode = false;
+        htmlMode = true;
         clear();
     }
 
     /** constructs a new Story reading its text from the given input stream */
     public Story(InputStream stream) {
         read(stream);
+        htmlMode = true;
     }
 
     /** resets the story back to an empty initial state */

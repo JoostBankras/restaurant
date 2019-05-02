@@ -1,8 +1,11 @@
 package com.example.madlibs;
 
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,28 +27,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (load() == null){
             setContentView(R.layout.activity_main);
-            List<String> List = new ArrayList<>();
-            List.add("madlib0_simple");
-            List.add("madlib1_tarzan");
-            List.add("madlib2_university");
-            List.add("madlib3_clothes");
-            List.add("madlib4_dance");
-
-            Random rand = new Random();
-            int version = rand.nextInt(List.size());
-            joe = List.get(version);
-            first = get_story(joe);
-            System.out.println(first.text);
+            first = get_random_story();
             save();
         }
         else{
             first = load();
-            System.out.println(first.text);
             if (first.getPlaceholderRemainingCount() == 0){
                 setContentView(R.layout.story);
                 TextView one = findViewById(R.id.textView2);
                 String haha = first.toString();
-                one.setText(haha);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    one.setText(Html.fromHtml(haha, Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    one.setText(Html.fromHtml(haha));
+                }
             }
             else{
                 View button = findViewById(R.id.button);
@@ -55,7 +50,21 @@ public class MainActivity extends AppCompatActivity {
         }
 //        System.out.println(first.text);
     }
+    private Story get_random_story() {
+        List<String> List = new ArrayList<>();
+        List.add("madlib0_simple");
+        List.add("madlib1_tarzan");
+        List.add("madlib2_university");
+        List.add("madlib3_clothes");
+        List.add("madlib4_dance");
 
+        Random rand = new Random();
+        int version = rand.nextInt(List.size());
+        joe = List.get(version);
+        first = get_story(joe);
+        first.htmlMode = true;
+        return first;
+    }
     private Story get_story(String joe) {
 
         if (joe == "madlib0_simple") {
@@ -101,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         save();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void onItemClick1(View view){
         TextView input = findViewById(R.id.editText);
         String input1 = input.getText().toString();
@@ -118,30 +128,26 @@ public class MainActivity extends AppCompatActivity {
         next.setText("please type a " + next1);
 
 
-        if (first.getPlaceholderRemainingCount() == 0) {
+        if (first.getPlaceholderRemainingCount() <= 0) {
             setContentView(R.layout.story);
             TextView one = findViewById(R.id.textView2);
             String haha = first.toString();
-            one.setText(haha);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                one.setText(Html.fromHtml(haha, Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                one.setText(Html.fromHtml(haha));
+            }
+
+            save();
         }
         save();
     }
     public void onItemClick2(View view){
         first.clear();
         setContentView(R.layout.main_fillin);
-        List<String> List = new ArrayList<>();
-        List.add("madlib0_simple");
-        List.add("madlib1_tarzan");
-        List.add("madlib2_university");
-        List.add("madlib3_clothes");
-        List.add("madlib4_dance");
-
-        Random rand = new Random();
-        int version = rand.nextInt(List.size());
-        joe = List.get(version);
-        first = get_story(joe);
-
+        first = get_random_story();
         onItemClick(view);
+
         save();
     }
 
