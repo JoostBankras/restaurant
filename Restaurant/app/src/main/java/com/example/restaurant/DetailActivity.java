@@ -14,9 +14,12 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+//        get Extra item from intent
         Intent intent = getIntent();
         String category = intent.getSerializableExtra("item").toString();
         String [] parts = category.split("~");
+
+//        put all the data in the detail view
         TextView one = findViewById(R.id.textView2);
         one.setText(parts[5]);
         TextView two = findViewById(R.id.textView4);

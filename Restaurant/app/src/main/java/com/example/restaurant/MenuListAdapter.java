@@ -36,9 +36,8 @@ public class MenuListAdapter extends ArrayAdapter<String> {
 //        get variables for list item
         String line = ListItems.get(position);
         String [] parts = line.split("~");
-        for (int i=0;i<parts.length;i++){
-            System.out.println(parts[i]);
-        }
+
+//        set all the data in the ListView
         TextView name = convertView.findViewById(R.id.name);
         TextView price = convertView.findViewById(R.id.price);
         name.setText(parts[5]);

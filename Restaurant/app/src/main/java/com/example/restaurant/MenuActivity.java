@@ -38,6 +38,7 @@ public class MenuActivity extends AppCompatActivity implements MenuRequest.Callb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+//        get extra data from intent
         Intent intent = getIntent();
         String category = intent.getSerializableExtra("category").toString();
 //        define all the data
@@ -45,9 +46,11 @@ public class MenuActivity extends AppCompatActivity implements MenuRequest.Callb
         data.getMenues(this);
     }
 
+//    GridItem listener for listview
     private class GridItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//            get next intent and put extra with it
             Intent intent = new Intent(MenuActivity.this, DetailActivity.class);
             intent.putExtra("item", lines.get(position));
             startActivity(intent);
